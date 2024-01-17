@@ -14,6 +14,7 @@ void setup() {
 }
 
 void loop() {
+  // Getting data from Transmitter module.
   trans_loop();
 
 }

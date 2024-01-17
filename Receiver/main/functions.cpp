@@ -37,34 +37,58 @@ void motor_turn_off() {
 void lcd_pump_on() {
   lcd.setCursor(0, 1);
   // displayWithDelay("Pump: ON        ", 1000);
-  lcd.print("Pump: ON        ");
+  lcd.print("Pump : ON       ");
   delay(1000);
 }
 
 void lcd_pump_off() {
   lcd.setCursor(0, 1);
   // displayWithDelay("Pump: OFF       ", 1000);
-  lcd.print("Pump: OFF       ");
+  lcd.print("Pump : OFF      ");
   delay(1000);
 }
 
 void lcd_mode_auto() {
   lcd.setCursor(0, 1);
   // displayWithDelay("Mode: Automatic ", 1000);
-  lcd.print("Mode: Automatic ");
+  lcd.print("Mode : Automatic");
   delay(1000);
 }
 
 void lcd_mode_timer() {
   lcd.setCursor(0, 1);
-  displayWithDelay("Mode: Set Timer", 1000);
+  displayWithDelay("Mode : Set Timer", 1000);
   // lcd.print("Mode: Set Timer ");
   // delay(1000);
 }
 
 void lcd_mode_manual() {
   lcd.setCursor(0, 1);
-  lcd.print("Mode: Manual    ");
+  lcd.print("Mode : Manual   ");
+  delay(1000);
+}
+
+
+void lcd_pls_setTime() {
+  lcd.setCursor(0, 1);
+  lcd.print("Please Set Time.");
+  // This function used in some other place if use delay(), please be carefull. Or use delay where it is used.
+  // delay(1000);
+}
+
+void no_data_rec() {
+  lcd.clear();
+  lcd.setCursor(0, 0);
+  lcd.print("No Data Received");
+  lcd.setCursor(0, 1);
+  lcd.print("from Transmitter");
+  delay(1000);
+
+  lcd.clear();
+  lcd.setCursor(0, 0);
+  lcd.print("So No Mode      ");
+  lcd.setCursor(0, 1);
+  lcd.print("is Selected.    ");
   delay(1000);
 }
 

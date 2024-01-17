@@ -23,6 +23,7 @@ const int highLevel = 81;
 const int incrementTime = 10;
 const int decrementTime = 10;
 
+
 void pump_setup() {
   pinMode(Motor_Pin, OUTPUT);
 
@@ -40,37 +41,74 @@ void pump_setup() {
 
 
 int updatePumpState(int Level) {
-  int valueToReturn = 0; // Default value if no condition is met
 
   // Conditions to check button states and level
   if (digitalRead(buttonAutomatic) == LOW) {
     if (Level < lowLevel) {
-      valueToReturn = 1;
-    } else if (Level <= midLevel) {
-      valueToReturn = 2;
+      motor_turn_on();
+      lcd_mode_auto();
+      lcd_pump_on();
+      showSetTime = true;
+      timerDuration = 0;
+      startTime = 0;
+
+    } else if (Level < highLevel  && Level > lowLevel) {
+      lcd_mode_auto();
+      if (pumpOn) {
+        lcd_pump_on();
+      } else if (!pumpOn) {
+        lcd_pump_off();
+      }
+      showSetTime = true;
+      timerDuration = 0;
+      startTime = 0;
+
     } else if (Level > highLevel) {
-      valueToReturn = 3;
+      motor_turn_off();
+      lcd_mode_auto();
+      lcd_pump_off();
+      showSetTime = true;
+      timerDuration = 0;
+      startTime = 0;
     }
     
   } else if (digitalRead(buttonManual) == LOW) {
-    valueToReturn = 4;
+    lcd_mode_manual();
+    delay(1000);  // Delays 2 seconds (1 here and 1 in the function)  sothat Motor_Pin doesn't start immediately.
+    motor_turn_on();
+    lcd_pump_on();
+    showSetTime = true;
+    timerDuration = 0;
+    startTime = 0;
 
 
   } else if (digitalRead(buttonTimer) == LOW) {
+
       unsigned long currentMillis = millis();
+      if (pumpOn && showSetTime) {
+        motor_turn_off();
+      }
+
       if (digitalRead(buttonOk) == LOW  && startTime == 0) {
-        valueToReturn = 5;
+        start_btn();
+        showSetTime = false;
+
       } else if (digitalRead(buttonReset) == LOW) {
-        valueToReturn = 6;
+        resetTimer();
+        showSetTime = false;
+
       } else if (digitalRead(buttonUp) == LOW) {
-        valueToReturn = 7;
+        incrementTimer(incrementTime);
+        showSetTime = false;
+
       } else if (digitalRead(buttonDown) == LOW) {
-        valueToReturn = 8;
-      }  
-      // else if (digitalRead(buttonOk) == HIGH  &&  digitalRead(buttonReset) == HIGH  &&  
-      // digitalRead(buttonUp) == HIGH  &&  digitalRead(buttonDown) == HIGH) {
-      //   valueToReturn = 9;
-      // }
+        decrementTimer(decrementTime);
+        showSetTime = false;
+
+      // If no button is pressed, this code will execute.
+      } else if (showSetTime){
+        lcd_pls_setTime();
+      }
 
       // Update and display timer every second
       if (currentMillis - previousMillis >= 1000) {
@@ -78,8 +116,6 @@ int updatePumpState(int Level) {
         previousMillis = currentMillis;
       }
   }
-
-  return valueToReturn;
 }
 
 

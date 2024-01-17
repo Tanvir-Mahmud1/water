@@ -18,8 +18,6 @@ void mode_loop();
 
 void lcd_water(int Level);     // We should specify the type of the parameter Level in the function declaration.
 
-void performAction(int value, int Level);
-
 void motor_turn_on();
 void motor_turn_off();
 void lcd_pump_on();
@@ -28,11 +26,16 @@ void lcd_mode_auto();
 void lcd_mode_timer();
 void lcd_mode_manual();
 
-void startTimer();
+void lcd_pls_setTime();
+
+void start_btn();
 void resetTimer();
 void incrementTimer(unsigned long increment);
 void decrementTimer(unsigned long decrement);
-void updateTimer();
+double updateTimer();
+void formatTimer();
+
+void no_data_rec();
 
 void displayWithDelay(const char* text, unsigned long delayTime);
 
@@ -41,7 +44,9 @@ extern const int Motor_Pin;
 extern bool pumpOn;
 extern unsigned long startTime; 
 extern unsigned long previousMillis;
+
 extern bool showMessage;
+extern bool showSetTime;
 
 extern const int lowLevel;
 extern const int midLevel;
@@ -49,6 +54,8 @@ extern const int highLevel;
 
 extern const int incrementTime;
 extern const int decrementTime;
+
+extern unsigned long timerDuration;
 
 
 #endif
