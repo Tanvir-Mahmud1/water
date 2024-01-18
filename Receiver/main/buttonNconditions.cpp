@@ -44,14 +44,17 @@ int updatePumpState(int Level) {
 
   // Conditions to check button states and level
   if (digitalRead(buttonAutomatic) == LOW) {
+    // Bellow code is needed while mode changes from timer to any other two.
+    start_btn_pressed = false;  // This will help again to increament or decreament timer while timer is already on.
+    showSetTime = true;
+    timerDuration = 0;
+    startTime = 0;
+
     if (Level < lowLevel) {
       motor_turn_on();
       lcd_mode_auto();
       lcd_pump_on();
-      showSetTime = true;
-      timerDuration = 0;
-      startTime = 0;
-
+  
     } else if (Level < highLevel  && Level > lowLevel) {
       lcd_mode_auto();
       if (pumpOn) {
@@ -59,17 +62,11 @@ int updatePumpState(int Level) {
       } else if (!pumpOn) {
         lcd_pump_off();
       }
-      showSetTime = true;
-      timerDuration = 0;
-      startTime = 0;
 
     } else if (Level > highLevel) {
       motor_turn_off();
       lcd_mode_auto();
       lcd_pump_off();
-      showSetTime = true;
-      timerDuration = 0;
-      startTime = 0;
     }
     
   } else if (digitalRead(buttonManual) == LOW) {
@@ -77,6 +74,7 @@ int updatePumpState(int Level) {
     delay(1000);  // Delays 2 seconds (1 here and 1 in the function)  sothat Motor_Pin doesn't start immediately.
     motor_turn_on();
     lcd_pump_on();
+    // Bellow code is needed while mode changes from timer to any other two.
     showSetTime = true;
     timerDuration = 0;
     startTime = 0;

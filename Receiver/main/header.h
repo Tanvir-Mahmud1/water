@@ -47,6 +47,7 @@ extern unsigned long previousMillis;
 
 extern bool showMessage;
 extern bool showSetTime;
+extern bool start_btn_pressed;
 
 extern const int lowLevel;
 extern const int midLevel;
